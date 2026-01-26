@@ -11,7 +11,7 @@ HumanA::HumanA(std::string name, Weapon& wType) : _name(name), _weapon(wType)
 	return ;
 }
 
-HumanA::HumanA(void) : _name("default name"), _weapon("default sword")
+HumanA::HumanA(void) : _name("default name"), _weapon(*(new Weapon("default sword")))
 {
 	return ;
 }
