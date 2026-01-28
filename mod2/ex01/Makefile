@@ -1,6 +1,6 @@
 SRCS = main.cpp Fixed.cpp
 
-NAME = canonical
+NAME = fixed
 
 #HEADER = Fixed.hpp
 
