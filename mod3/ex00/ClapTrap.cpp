@@ -20,28 +20,50 @@ ClapTrap::~ClapTrap()
 	std::cout << "Destructor called on " << _name << std::endl;
 }
 
+ClapTrap& ClapTrap::operator=(ClapTrap const& rhs)
+{
+	_name = rhs._name;
+	_hp = rhs._hp;
+	_nrj = rhs._nrj;
+	_ad = rhs._ad;
+	return (*this);
+}
+
 void	ClapTrap::attack(const std::string& target)
 {
+	if (_hp == 0)
+	{
+		std::cout << "ClapTrap " << _name << " can't attack " << target << "because he has no hp left!" << std::endl;
+		return ;
+	}
 	if (_nrj == 0)
 	{
 		std::cout << "ClapTrap " << _name << " can't attack " << target << "because he has no energy left!" << std::endl;
 		return ;
 	}
 	std::cout << "ClapTrap " << _name << "attacks " << target << ", causing " << _ad << "points of damage!" << std::endl;
-	_nrj--;//ou --nrj ?
+	--_nrj;
 }
 void	ClapTrap::takeDamage(unsigned int amount)
 {
+	int damage = (amount <= _hp ? amount : _hp);//pour pas prendre plus que ce que tu n'as
 
+	_hp -= damage;
+	std::cout << "ClapTrap " << _name << "takes" << damage << " damage, getting him to " << _hp << "hp!" << std::endl;
 }
 
 void	ClapTrap::beRepaired(unsigned int amount)
 {
+	if (_hp == 0)
+	{
+		std::cout << "ClapTrap " << _name << " can't repair himself because he has no hp left!" << std::endl;
+		return ;
+	}
 	if (_nrj == 0)
 	{
 		std::cout << "ClapTrap " << _name << " can't repair himself because he has no energy left!" << std::endl;
 		return ;
 	}
 	std::cout << "ClapTrap " << _name << "repairs himself for " << amount << "hps!" << std::endl;
-	_nrj--;//ou --nrj ?
+	--_nrj;
 }
