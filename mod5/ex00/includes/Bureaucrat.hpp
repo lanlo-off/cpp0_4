@@ -5,24 +5,6 @@
 #include <string>
 #include <exception>
 
-class GradeTooHighException : public std::exception
-{
-	public:
-		const char* what() const throw()
-		{
-			return ("Grade too high\n");
-		}
-};
-
-class GradeTooLowException : public std::exception
-{
-	public:
-		const char* what() const throw()
-		{
-			return ("Grade too low\n");
-		}
-};
-
 class Bureaucrat
 {
 private:
@@ -41,6 +23,18 @@ public:
 
 	std::string const& getName() const;
 	int const& getGrade() const;
+
+class GradeTooHighException : public std::exception
+{
+	public:
+		const char* what() const throw();
+};
+
+class GradeTooLowException : public std::exception
+{
+	public:
+		const char* what() const throw();
+};
 };
 
 std::ostream& operator<<(std::ostream& o, Bureaucrat const& rhs);

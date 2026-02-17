@@ -2,13 +2,13 @@ SRC_DIR = src
 HEADER_DIR = includes
 OBJ_DIR = obj
 
-SRCS = main.cpp Bureaucrat.cpp
+SRCS = main.cpp Bureaucrat.cpp Form.cpp
 SRCS := $(addprefix $(SRC_DIR)/, $(SRCS))
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-NAME = bureaucrat
+NAME = form
 
-HEADER = Bureaucrat.hpp
+HEADER = Bureaucrat.hpp Form.hpp
 HEADER := $(addprefix $(HEADER_DIR)/, $(HEADER))
 
 CC = c++

@@ -1,4 +1,4 @@
-#include "Bureaucrat.hpp"
+#include "../includes/Bureaucrat.hpp"
 
 int main(void)
 {
@@ -6,9 +6,9 @@ int main(void)
 	try {
 		Bureaucrat a("Jean", 2);
 		std::cout << a;
-		++a; // passe à 1
+		++a;//passe à 1
 		std::cout << "after ++: " << a;
-		++a; // doit lancer GradeTooHighException
+		++a;//doit lancer GradeTooHighException
 		std::cout << a;
 	} catch (std::exception &e) {
 		std::cerr << e.what();
@@ -18,9 +18,9 @@ int main(void)
 	try {
 		Bureaucrat b("Marie", 149);
 		std::cout << b;
-		--b; // passe à 150
+		--b;//passe à 150
 		std::cout << "after --: " << b;
-		--b; // doit lancer GradeTooLowException
+		--b;//doit lancer GradeTooLowException
 		std::cout << b;
 	} catch (std::exception &e) {
 		std::cerr << e.what();
