@@ -2,13 +2,13 @@ SRC_DIR = src
 HEADER_DIR = includes
 OBJ_DIR = obj
 
-SRCS = main.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp
+SRCS = main.cpp Intern.cpp Bureaucrat.cpp AForm.cpp ShrubberyCreationForm.cpp PresidentialPardonForm.cpp RobotomyRequestForm.cpp
 SRCS := $(addprefix $(SRC_DIR)/, $(SRCS)) 
 OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
-NAME = forms
+NAME = intern
 
-HEADER = Bureaucrat.hpp AForm.hpp ShrubberyCreationForm.hpp PresidentialPardonForm.hpp RobotomyRequestForm.hpp
+HEADER = Bureaucrat.hpp Intern.hpp AForm.hpp ShrubberyCreationForm.hpp PresidentialPardonForm.hpp RobotomyRequestForm.hpp
 HEADER := $(addprefix $(HEADER_DIR)/, $(HEADER))
 
 CC = c++
