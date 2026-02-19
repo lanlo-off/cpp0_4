@@ -1,0 +1,5 @@
+Cast						Sert à					Sécurité
+static_cast				conversions connues				sûre
+dynamic_cast			héritage runtime				sûre
+const_cast				enlever const					limitée
+reinterpret_cast		réinterpréter les bits		⚠️ dangereux
