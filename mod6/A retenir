@@ -1,0 +1,12 @@
+Private constructor partout
+
+ex00
+ScalarConverter n'a qu'1 seule fonction convert qui doit etre static
+
+ex01
+le cast doit etre utilise 2 fois
+Mettre le maximum de fonctions en static
+
+ex02
+Pas obligatoire de seeder le random
+mettre le maximum de fonction en static
