@@ -1,20 +1,28 @@
 #include "Array.hpp"
 
 template<typename T>
-Array<T>::Array() : _size(0) {}
+Array<T>::Array() : _elements(NULL), _size(0) {}
 
 template<typename T>
 Array<T>::Array(unsigned int const n) : _size(n)
 {
-	_elements = new T[_size];
+	if (_size)
+		_elements = new T[_size];
+	else
+		_elements = NULL;
 }
 
 template<typename T>
 Array<T>::Array(const Array& other) : _size(other._size)
 {
-	_elements = new T[_size];
-	for (size_t i = 0; i < _size; i++)
-		_elements[i] = other._elements[i];
+	if (_size)
+	{
+		_elements = new T[_size];
+		for (size_t i = 0; i < _size; i++)
+			_elements[i] = other._elements[i];
+	}
+	else
+		_elements = NULL;
 }
 
 template<typename T>
@@ -38,6 +46,8 @@ Array<T>& Array<T>::operator=(const Array& other)
 			for (size_t i = 0; i < _size; i++)
 				_elements[i] = other._elements[i];
 		}
+		else
+			_elements = NULL;
 	}
 	return *this;
 }

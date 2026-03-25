@@ -33,6 +33,15 @@ void printElement(const T& x)
     std::cout << x << " ";
 }
 
+// Affichage mais
+//Fonction NON-CONST T& (force la 2e surcharge)
+template <typename T>
+void printNonConstRef(T& x)
+{
+	std::cout << x << " ";
+	x++;  // On peut modifier car T& est non-const
+}
+
 // Compare à une valeur donnée (via static cast)
 template <typename T>
 void compareWith42(const T& x)
