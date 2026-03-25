@@ -1,4 +1,43 @@
 #include "../includes/ScalarConverter.hpp"
+#include <sstream>
+#include <cmath>
+
+static bool isWholeNumber(double value)
+{
+	double integralPart;
+
+	return (std::modf(value, &integralPart) == 0.0);
+}
+
+static std::string formatFloatValue(float value)
+{
+	std::ostringstream oss;
+
+	if (isWholeNumber(static_cast<double>(value)))
+		oss << std::fixed << std::setprecision(1) << value;
+	else
+		oss << std::setprecision(7) << value;
+	return (oss.str());
+}
+
+/**
+ * @brief Necessaire pour garder la precision (42.42f = 42.42 et pas 42.4)
+ * 15 etant la precision max fiable des double, mais si c'est un entier on ne veut que 1
+ * 
+ * @param value 
+ * @param fractionalPrecision 
+ * @return std::string 
+ */
+static std::string formatDoubleValue(double value, int fractionalPrecision)
+{
+	std::ostringstream oss;
+
+	if (isWholeNumber(value))
+		oss << std::fixed << std::setprecision(1) << value;
+	else
+		oss << std::setprecision(fractionalPrecision) << value;
+	return (oss.str());
+}
 
 //std::precision(1) definit le nombre de chiffres apres la virgule 
 //(grace a std::fixed car sans lui ca definirait le nb de chiffres a afficher avant et apres la virgule)
@@ -20,12 +59,13 @@ void	printFromChar(char const& input)
 				<< static_cast<int>(val)
 				<< '\n';
 /*FLOAT*/
-	std::cout	<< "float: " << std::fixed << std::setprecision(1) << static_cast<float>(val)
+	std::cout	<< "float: "
+				<< formatFloatValue(static_cast<float>(val))
 				<< "f"
 				<< '\n';
 /*DOUBLE*/
 	std::cout	<< "double: "
-				<< val
+				<< formatDoubleValue(val, 15)
 				<< std::endl;
 }
 
@@ -53,13 +93,13 @@ void	printFromInt(long& input)
 /*FLOAT*/
 	std::cout	<< "float: ";
 	if (val >= FMIN && val <= FMAX)
-		std::cout	<< std::fixed << std::setprecision(1) << static_cast<float>(val)
+		std::cout	<< formatFloatValue(static_cast<float>(val))
 					<< "f\n";
 	else
 		std::cout << "Impossible\n";
 /*DOUBLE*/
 	std::cout	<< "double: "
-				<< val
+				<< formatDoubleValue(val, 15)
 				<< std::endl;
 }
 
@@ -88,11 +128,11 @@ void	printFromFloat(float& input)
 		std::cout << "Impossible\n";
 /*FLOAT*/
 	std::cout	<< "float: "
-				<< std::fixed << std::setprecision(1) << static_cast<float>(val)
+				<< formatFloatValue(static_cast<float>(val))
 				<< "f\n";
 /*DOUBLE*/
 	std::cout	<< "double: "
-				<< val
+				<< formatDoubleValue(val, 7)
 				<< std::endl;
 }
 
@@ -121,13 +161,13 @@ void	printFromDouble(double& input)
 /*FLOAT*/
 	std::cout	<< "float: ";
 	if (input >= FMIN && input <= FMAX)
-		std::cout	<< std::fixed << std::setprecision(1) << static_cast<float>(input)
+		std::cout	<< formatFloatValue(static_cast<float>(input))
 					<< "f\n";
 	else
 		std::cout << "Impossible\n";
 /*DOUBLE*/
 	std::cout	<< "double: "
-				<< input
+				<< formatDoubleValue(input, 15)
 				<< std::endl;
 }
 
@@ -144,7 +184,7 @@ void	printFromSpecial(std::string const& input)
 	else
 	{
 		d = std::strtod(input.c_str(), NULL);
-		f = static_cast<double>(d);
+		f = static_cast<float>(d);
 	}
 	std::cout	<< "char: Impossible\n"
 				<< "int: Impossible\n"

@@ -30,12 +30,14 @@ Base* generate()
  */
 void	identify(Base *p)
 {
-	if (dynamic_cast<A*>(p))
-		std::cout << "A" << std::endl;
+	if (!p)
+		std::cout << "Pointeur null" << std::endl;
+	else if (dynamic_cast<A*>(p))
+		std::cout << "Pointer to A" << std::endl;
 	else if (dynamic_cast<B*>(p))
-		std::cout << "B" << std::endl;
+		std::cout << "Pointer to B" << std::endl;
 	else if (dynamic_cast<C*>(p))
-		std::cout << "C" << std::endl;
+		std::cout << "Pointer to C" << std::endl;
 	else
 		std::cout << "Rupture de l'espace temps" << std::endl;
 
@@ -50,32 +52,32 @@ void	identify(Base *p)
  */
 void	identify(Base& p)
 {
-	/*Tentative pour vois si c'est A*/
+	/*Tentative pour voir si c'est A*/
 	try
 	{
 		A& a = dynamic_cast<A&>(p);
 		(void)a;//Pour éviter le warning "unused variable"
-		std::cout << "A" << std::endl;//Si on arrive jusqu'ici c'est que le cast n'a pas throw d'exception !
+		std::cout << "Reference to A" << std::endl;//Si on arrive jusqu'ici c'est que le cast n'a pas throw d'exception !
 		return;
 	}
 	catch (const std::exception& e) {}
 
-	/*Tentative pour vois si c'est B*/
+	/*Tentative pour voir si c'est B*/
 	try
 	{
 		B& b = dynamic_cast<B&>(p);
 		(void)b;
-		std::cout << "B" << std::endl;
+		std::cout << "Reference to B" << std::endl;
 		return;
 	}
 	catch (const std::exception& e) {}
 
-	/*Tentative pour vois si c'est C*/
+	/*Tentative pour voir si c'est C*/
 	try
 	{
 		C& c = dynamic_cast<C&>(p);
 		(void)c;
-		std::cout << "C" << std::endl;
+		std::cout << "Reference to C" << std::endl;
 		return;
 	}
 	catch (const std::exception& e) {}

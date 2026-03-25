@@ -15,10 +15,11 @@ int main()
 	d.preferredForm = "Abolition peine capitale";
 
 	Data* ptr = &d;
+	std::cout << "original -> " << ptr->name << " | " << ptr->grade << " | " << ptr->preferredForm << std::endl;
 
 	uintptr_t raw = Serializer::serialize(ptr);
 	Data* restored = Serializer::deserialize(raw);
 
-	std::cout << restored->name << " | " << restored->grade << " | " << restored->preferredForm << std::endl;
+	std::cout << "restored -> " << restored->name << " | " << restored->grade << " | " << restored->preferredForm << std::endl;
 	return (0);
 }

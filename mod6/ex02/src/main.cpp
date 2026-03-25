@@ -5,9 +5,9 @@
  */
 int main()
 {
-	std::srand(std::time(NULL));//genere une "seed" de rand par ms car rand sinon renvoie la meme suite a chaque fois
+	std::srand(std::time(NULL));
 	
-	Base* p = generate(); // On génère aléatoirement A, B ou C
+	Base* p = generate();
 
 	identify(p);
 	identify(*p);
