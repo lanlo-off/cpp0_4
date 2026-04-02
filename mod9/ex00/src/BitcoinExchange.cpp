@@ -1,16 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   BitcoinExchange.cpp                                :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cpollock <cpollock@42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/23 10:54:44 by cpollock          #+#    #+#             */
-/*   Updated: 2026/01/23 10:54:55 by cpollock         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "BitcoinExchange.hpp"
+#include "../includes/BitcoinExchange.hpp"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -33,9 +21,9 @@ BitcoinExchange	&BitcoinExchange::operator=(const BitcoinExchange &other) {
 }
 
 static std::string	&trim(std::string &str) {
-	while ((str.size() > 0) && (std::isspace(str[0])))
+	while ((str.size() > 0) && (std::isspace((unsigned char)str[0])))
 		str.erase(0, 1);
-	while ((str.size() > 0) && (std::isspace(str[str.size() - 1])))
+	while ((str.size() > 0) && (std::isspace((unsigned char)str[str.size() - 1])))
 		str.erase(str.size() - 1, 1);
 	return (str);
 }
@@ -95,24 +83,20 @@ static float	getFloatVal(const std::string &str) {
 
 static bool	isValidDate(const std::string &date) {
 	int					year, month, day;
+	static int daysInMonth[] = {
+        31, 28, 31, 30, 31, 30,
+        31, 31, 30, 31, 30, 31
+    };
 
 	try {
 		getDateVal(date, &year, &month, &day);
-		//Check for obvious impossible values
-		if (year < 0 || month <= 0 || month > 12 || day <= 0 || day > 31)
+		if (year < 0 || month < 1 || month > 12 || day <= 0)
 			return (false);
-		//Check day for months that don't have 31 days
-		if ((day > 30) && ((month % 2 == 0) ^ (month >= 8)))
-			return (false);
-		//Check february
-		if ((month == 2) && (day > 28)) {
-			if (day >= 30)
-				return (false);
-			//Check if date is in a leap year
-			if ((year % 4 != 0) && ((year % 100 != 0) || (year % 400 == 0)))
-				return (false);
-		}
-		return (true);
+		
+		bool isBissextile = (year % 400 == 0) || ((year % 4 == 0) && (year % 100 != 0));
+		if (month == 2 && isBissextile)
+			return day <= 29;
+		return (day <= daysInMonth[month - 1]);
 	}
 	catch (std::exception &e) {}
 	return (false);
@@ -143,15 +127,15 @@ void	BitcoinExchange::loadDatabase(const std::string &database) {
 	}
 
 	fData.close();
-	
 }
 
-static float	getBtcRate(const std::string &date, std::map<std::string, float> data) {
-	std::map<std::string, float>::iterator	iteData = data.end();
-	if (data.find(date) != iteData)
-		return (data[date]);
+static float	getBtcRate(const std::string &date, const std::map<std::string, float> &data) {
+	std::map<std::string, float>::const_iterator	iteData = data.end();
+	std::map<std::string, float>::const_iterator	found = data.find(date);
+	if (found != iteData)
+		return (found->second);
 
-	std::map<std::string, float>::iterator	itData = data.begin();
+	std::map<std::string, float>::const_iterator	itData = data.begin();
 	float									rate = itData->second;
 	
 	while ((itData != iteData) && (date > itData->first)) {
@@ -176,7 +160,7 @@ void	BitcoinExchange::readInput(const std::string &input) const {
 	bool		bValidDate, bValidFloat, bFirstLine = true;
 	float		Value;
 	while (getline(fInput, line)) {
-		if ((!bFirstLine) | (line != "date | value")) {
+		if ((!bFirstLine) || (line != "date | value")) {
 			std::stringstream	ssLine(line);
 			if (getline(ssLine, date, '|') && getline(ssLine, val)) {
 				date = trim(date);
@@ -198,7 +182,7 @@ void	BitcoinExchange::readInput(const std::string &input) const {
 					else if (Value < 0)
 						std::cout << " Value " << Value << " is negative.";
 					else if (Value > 1000)
-						std::cout << " Value " << Value << " is OVER 1 THOUSAND.";
+						std::cout << " Value " << Value << " is OVER 1 000.";
 					std::cout << "\e[0m" << '\n';
 				}
 			}
@@ -211,3 +195,25 @@ void	BitcoinExchange::readInput(const std::string &input) const {
 	
 	fInput.close();
 }
+
+
+
+const char*	BitcoinExchange::DatabaseOpenFailException::what(void) const throw() {
+	return ("Cannot open database file.");
+};
+
+const char*	BitcoinExchange::InvalidDateValueException::what(void) const throw() {
+	return ("Invalid value in date.");
+};
+
+const char*	BitcoinExchange::InvalidFloatValueException::what(void) const throw() {
+	return ("Value is not a float.");
+};
+
+const char*	BitcoinExchange::InputOpenFailException::what(void) const throw() {
+	return ("Cannot open input file.");
+};
+
+const char*	BitcoinExchange::NoDataException::what(void) const throw() {
+	return ("No usable data was found.");
+};

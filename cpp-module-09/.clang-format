@@ -1,0 +1,38 @@
+---
+Language: Cpp
+BasedOnStyle: GNU
+BreakBeforeBraces: Allman
+IndentWidth: 4
+TabWidth: 4
+#UseTab: ForIndentation
+UseTab: Always
+ColumnLimit: 80
+Standard: Cpp03
+DerivePointerAlignment: false
+PointerAlignment: Left
+SortIncludes: false
+IncludeBlocks: Preserve
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: true
+SeparateDefinitionBlocks: Always
+AllowShortFunctionsOnASingleLine: InlineOnly
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+BreakAfterReturnType: None
+AlwaysBreakAfterReturnType: None
+AlwaysBreakAfterDefinitionReturnType: None
+PenaltyReturnTypeOnItsOwnLine: 1000000
+AlignTrailingComments: false
+SpaceBeforeParens: ControlStatements
+InsertBraces: false
+BreakBeforeBinaryOperators: All
+AlignOperands: Align
+ContinuationIndentWidth: 8
+IndentCaseLabels: true
+AccessModifierOffset: 0
+IndentAccessModifiers: true
+...
+---
+Language: C
+DisableFormat: true
+...

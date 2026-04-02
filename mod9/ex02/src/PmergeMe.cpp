@@ -1,26 +1,14 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   PmergeMe.cpp                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: cpollock <cpollock@42.fr>                  +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/01/28 13:24:23 by cpollock          #+#    #+#             */
-/*   Updated: 2026/01/28 13:24:34 by cpollock         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
-#include "PmergeMe.hpp"
+#include "../includes/PmergeMe.hpp"
 #include <sstream>
 #include <iostream>
 
-PmergeMe::PmergeMe(void) {}
+PmergeMe::PmergeMe() {}
 
 PmergeMe::PmergeMe(const PmergeMe &other) {
 	*this = other;
 }
 
-PmergeMe::~PmergeMe(void) {}
+PmergeMe::~PmergeMe() {}
 
 PmergeMe	&PmergeMe::operator=(const PmergeMe &other) {
 	this->_sortVector = other._sortVector;
@@ -52,7 +40,7 @@ void	PmergeMe::push_to_cont(const std::string &num) {
 }
 
 //************************** DISPLAY CONTAINERS **************************
-void	PmergeMe::display_vector(void) const {
+void	PmergeMe::display_vector() const {
 	std::vector<int>::const_iterator	it = this->_sortVector.begin();
 	std::vector<int>::const_iterator	ite = this->_sortVector.end();
 	while (it != ite) {
@@ -63,7 +51,7 @@ void	PmergeMe::display_vector(void) const {
 	std::cout << '\n';
 }
 
-void	PmergeMe::display_deque(void) const {
+void	PmergeMe::display_deque() const {
 	std::deque<int>::const_iterator	it = this->_sortDeque.begin();
 	std::deque<int>::const_iterator	ite = this->_sortDeque.end();
 	while (it != ite) {
@@ -75,7 +63,7 @@ void	PmergeMe::display_deque(void) const {
 }
 
 //************************** CHECK CONTAINERS **************************
-void	PmergeMe::sortCheckVector(void) const {
+void	PmergeMe::sortCheckVector() const {
 	std::vector<int>::const_iterator	it = this->_sortVector.begin();
 	std::vector<int>::const_iterator	ite = this->_sortVector.end();
 	if (this->_sortVector.size() < 2)
@@ -86,7 +74,7 @@ void	PmergeMe::sortCheckVector(void) const {
 	}
 }
 
-void	PmergeMe::sortCheckDeque(void) const {
+void	PmergeMe::sortCheckDeque() const {
 	std::deque<int>::const_iterator	it = this->_sortDeque.begin();
 	std::deque<int>::const_iterator	ite = this->_sortDeque.end();
 	if (this->_sortDeque.size() < 2)
@@ -98,55 +86,7 @@ void	PmergeMe::sortCheckDeque(void) const {
 }
 
 
-//**************************** VECTOR SORTING ****************************
-/*static void	displayGroups(std::vector<int> &cont, size_t groupLen) {
-	size_t	i, pairLen = groupLen * 2;
-	if (groupLen <= 0) {
-		groupLen = 1;
-		pairLen = 1;
-	}
-
-	for (i = 0; i + pairLen <= cont.size(); i += pairLen) {
-		
-		std::string	strCol = "\e[96m";
-		if (cont[i + groupLen - 1] > cont[i + pairLen - 1])
-			strCol = "\e[93m";
-		std::cout << strCol << '[';
-		for (size_t j = 0; j < pairLen; j++) {
-			bool	isBig = (j == groupLen - 1 || j == pairLen - 1);
-			if (j == groupLen)
-				std::cout << "| ";
-			if (isBig)
-				std::cout << "\e[4m" "\e[1m";
-			std::cout << cont[i + j];
-			if (isBig)
-				std::cout << "\e[0m" << strCol;
-			if (j + 1 < pairLen)
-				std::cout << ' ';
-		}
-		std::cout << "] ";
-	}
-	if (i + groupLen <= cont.size()) {
-		std::string	strCol = "\e[94m";
-		std::cout << strCol << '[';
-		for (size_t j = 0; j < groupLen; j++) {
-			bool	isBig = (j == groupLen - 1);
-			if (isBig)
-				std::cout << "\e[4m" "\e[1m";
-			std::cout << cont[i + j];
-			if (!isBig)
-				std::cout << ' ';
-			else
-				std::cout << "\e[0m" << strCol;
-		}
-		std::cout << "] ";
-		i += groupLen;
-	}
-	std::cout << "\e[90m";
-	while (i < cont.size())
-		std::cout << cont[i++] << ' ';
-	std::cout << "\e[0m" << '\n';
-}*/
+//**************************** VECTOR SORTING ********
 
 //DO BINARY INSERTION OF PEND ELEMENT INTO MAIN CHAIN
 static void	sortBinaryInsertVector(std::vector< std::vector<int>::iterator > &chainMain,
@@ -156,9 +96,6 @@ std::vector<int> &groupSmall, size_t searchRange, size_t groupLen, int &comps) {
 
 	while (low < top) {
 		size_t	mid = low + ((top - low) / 2);
-
-		/*std::cout << "\e[3m" "\e[32m" "Comparing " << groupSmall[groupLen - 1]
-		<< " to " << chainMain[mid][groupLen - 1] << "\e[0m" << '\n';*/
 
 		if (++comps && (groupSmall[groupLen - 1] > chainMain[mid][groupLen - 1]))
 			low = mid + 1;
@@ -170,19 +107,10 @@ std::vector<int> &groupSmall, size_t searchRange, size_t groupLen, int &comps) {
 
 	size_t	slot = low;
 	if (low == top) {
-
-		/*std::cout << "\e[3m" "\e[32m" "Comparing " << groupSmall[groupLen - 1]
-		<< " to " << chainMain[low][groupLen - 1] << "\e[0m" << '\n';*/
-
 		if (++comps && (groupSmall[groupLen - 1] > chainMain[low][groupLen - 1]))
 			slot++;
 	}
 	chainMain.insert(chainMain.begin() + slot, groupSmall.begin());
-	
-	/*std::cout << "Main chain: ";
-	for (size_t j = 0; j < chainMain.size(); j++)
-		std::cout << chainMain[j][groupLen - 1] << ' ';
-	std::cout << '\n';*/
 }
 
 //SEPERATE ELEMENTS INTO MAIN CHAIN AND PEND CHAIN, THEN MERGE THEM
@@ -211,20 +139,9 @@ static void	sortMergeInsertVector(std::vector<int> &cont, size_t groupLen, int &
 	for (i = 0; i < chainBiggie.size(); i++)
 			chainMain.push_back(chainBiggie[i].begin());
 	
-	/*std::cout << "Main chain: ";
-	for (size_t j = 0; j < chainMain.size(); j++)
-		std::cout << chainMain[j][groupLen - 1] << ' ';
-	std::cout << '\n';*/
-	
-	//std::cout << "Pend chain: ";
 	if (chainSmalls.size() <= 1) {
-		/*std::cout << "Empty" << '\n';
-		displayGroups(cont, groupLen / 2);*/
 		return ;
 	}
-	/*for (size_t j = 1; j < chainSmalls.size(); j++)
-		std::cout << chainSmalls[j][groupLen - 1] << ' ';
-	std::cout << '\n';*/
 
 	size_t	prevJcbstl = 1;
 	size_t	currJcbstl = 3;
@@ -240,9 +157,6 @@ static void	sortMergeInsertVector(std::vector<int> &cont, size_t groupLen, int &
 						searchRange++;
 				}
 
-				/*std::cout << "\e[3m" "\e[92m" << "Inserting " << chainSmalls[pendCheck - 1].back()
-				<< " into Main chain with binary search of range " << searchRange << "\e[0m" << '\n';*/
-
 				sortBinaryInsertVector(chainMain, chainSmalls[pendCheck - 1], searchRange, groupLen, comps);
 			}
 		}
@@ -256,7 +170,6 @@ static void	sortMergeInsertVector(std::vector<int> &cont, size_t groupLen, int &
 		for (size_t k = 0; k < groupLen; k++)
 			cont[i++] = chainMain[j][k];
 	}
-	//displayGroups(cont, groupLen / 2);
 }
 
 //SORT PAIRS OF ELEMENTS RECURSIVELY
@@ -265,7 +178,6 @@ static void	sortPairsVector(std::vector<int> &cont, size_t groupLen, int &comps)
 	if (pairLen > cont.size())
 		return ;
 	
-	//displayGroups(cont, groupLen);
 	for (size_t i = 0; i + pairLen <= cont.size(); i += pairLen) {
 		size_t	pairHalf = i + groupLen - 1;
 		size_t	pairEnd = i + pairLen - 1;
@@ -277,16 +189,14 @@ static void	sortPairsVector(std::vector<int> &cont, size_t groupLen, int &comps)
 			}
 		}
 	}
-	//displayGroups(cont, groupLen);
+
 	sortPairsVector(cont, pairLen, comps);
 	sortMergeInsertVector(cont, groupLen, comps);
 }
 
-void	PmergeMe::sortVector(void) {
+void	PmergeMe::sortVector() {
 	int	comps = 0;
 	sortPairsVector(this->_sortVector, 1, comps);
-	/*std::cout << "\e[1m" "\e[4m" "\e[95m" "Total Comparisons:"
-	<< "\e[0m" "\e[1m" "\e[95m" " " << comps << "\e[0m" <<'\n';*/
 }
 
 
@@ -388,6 +298,18 @@ static void	sortPairsDeque(std::deque<int> &cont, size_t groupLen) {
 	sortMergeInsertDeque(cont, groupLen);
 }
 
-void	PmergeMe::sortDeque(void) {
+void	PmergeMe::sortDeque() {
 	sortPairsDeque(this->_sortDeque, 1);
+}
+
+const char* PmergeMe::InvalidValueException::what() const throw() {
+	return ("Invalid value in sequence.");
+}
+
+const char* PmergeMe::NegativeIntException::what() const throw() {
+	return ("Negative int in sequence.");
+}
+
+const char* PmergeMe::BadSortException::what() const throw() {
+	return ("Sequence was not sorted!");
 }

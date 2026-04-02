@@ -1,40 +1,37 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: cpollock <cpollock@42.fr>                  +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2026/01/27 16:13:03 by cpollock          #+#    #+#              #
-#    Updated: 2026/01/27 16:13:15 by cpollock         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+SRC_DIR = src
+HEADER_DIR = includes
+OBJ_DIR = obj
+
+SRCS = main.cpp RPN.cpp
+SRCS := $(addprefix $(SRC_DIR)/, $(SRCS))
+OBJS = $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 
 NAME = RPN
 
+HEADER = RPN.hpp
+HEADER := $(addprefix $(HEADER_DIR)/, $(HEADER))
+
 CC = c++
-CFLAGS = -Wall -Wextra -Werror
-CPPSTD = -std=c++98
 
-SOURCES = main.cpp \
-		  RPN.cpp
-
-OBJECTS = $(SOURCES:.cpp=.o)
-
-HEADERS = RPN.hpp
+CFLAGS = -Wall -Wextra -Werror -std=c++98 
 
 all: $(NAME)
 
-$(NAME): $(OBJECTS)
-	$(CC) $(CFLAGS) $(CPPSTD) $(OBJECTS) -o $(NAME)
+$(NAME): $(OBJS) 
+	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-%.o: %.cpp $(HEADERS)
-	$(CC) $(CFLAGS) $(CPPSTD) -c $< -o $@
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(HEADER) | $(OBJ_DIR)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(OBJECTS)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)
 
 re: fclean all
+
+.PHONY: all clean fclean re
